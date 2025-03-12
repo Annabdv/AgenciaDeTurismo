@@ -1,39 +1,45 @@
-public abstract class CartaoDeMetro implements VendaDeTurismoIF {
-    private int QtdeViagens;
-    private static final double VALOR_DE_UMA_VIAGEM = 7.0;
+public class CartaoDeMetro implements VendaDeTurismoIF {
+    public int qtdeViagens;
+    public static final double VALOR_DE_UMA_VIAGEM = 7;
 
-    public CartaoDeMetro(int QtdeViagens) throws Exception {
-        testaEntrada(QtdeViagens);
-        this.QtdeViagens = QtdeViagens;
+    public int getQtdeViagens() {
+        return qtdeViagens;
     }
 
-    private void testaEntrada(int QtdeViagens) throws Exception {
-        if (QtdeViagens <= 0) {
+    public void setQtdeViagens(int qtdeViagens) {
+        this.qtdeViagens = qtdeViagens;
+    }
+
+    public CartaoDeMetro(int qtdeViagens) throws Exception {
+        if (qtdeViagens<0){
             throw new Exception("Quantidade de viagens deve ser maior que zero");
+        }
+        else if (qtdeViagens == 0){
+            throw new Exception("Quantidade de viagens deve ser maior que zero");
+        }
+        else{
+            this.qtdeViagens = qtdeViagens;
         }
     }
 
-    public int getQtdeViagens() {
-        return QtdeViagens;
+    @Override
+    public String toString() {
+        return "CartaoDeMetro{" +
+                "qtdeViagens=" + qtdeViagens +
+                '}';
     }
-
-    public double setQtdeViagens(int QtdeViagens) throws Exception {
-        testaEntrada(QtdeViagens);
-        this.QtdeViagens = QtdeViagens;
 
     @Override
     public double getPreco() {
-        double precoTotal = QtdeViagens * VALOR_DE_UMA_VIAGEM;
-        if (QtdeViagens >= 20) {
-            precoTotal *= 0.8;
+        if (qtdeViagens<20){
+            return VALOR_DE_UMA_VIAGEM * qtdeViagens;
+        } else {
+            return VALOR_DE_UMA_VIAGEM * qtdeViagens * 0.8;
         }
-        return precoTotal;
-    }
     }
 
     @Override
     public String getDescricao() {
-        return "Cartão com " + QtdeViagens + " viagens.";
-    }}
-
-
+        return qtdeViagens + "viagens no metrô";
+    }
+}

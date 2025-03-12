@@ -1,49 +1,66 @@
-public class PasseioDeLancha implements VendaDeTurismoIF {
+import java.util.Objects;
+
+public class PasseioDeLancha implements VendaDeTurismoIF{
     private int numeroDePessoas;
-    private int qtdeHoras;
-    private double precoPorPessoa;
+    private int qtdeDeHoras;
+    public final double PRECO_POR_PESSOA = 60;
 
-    public PasseioDeLancha(int numeroDePessoas, int quantHoras, double precoPorPessoa) throws Exception {
-        testaEntrada(numeroDePessoas, quantHoras, precoPorPessoa);
+    public PasseioDeLancha(int numeroDePessoas, int qtdeDeHoras) {
         this.numeroDePessoas = numeroDePessoas;
-        this.qtdeHoras = qtdeHoras;
-        this.precoPorPessoa = precoPorPessoa;
-    }
-
-    private void testaEntrada(int numeroDePessoas, int qtdeHoras, double precoPorPessoa) throws Exception {
-        if (numeroDePessoas < 1) {
-            throw new Exception("Inválido. Pelo menos uma pessoa deve participar do passeio.");
-        }
-        if (qtdeHoras < 1) {
-            throw new Exception("O passeio deve durar no mínimo 1 hora.");
-        }
-        if (qtdeHoras > 10) {
-            throw new Exception("O passeio deve durar no máximo 10 horas.");
-        }
-        if (precoPorPessoa <= 0) {
-            throw new Exception("O preço por pessoa deve ser maior que zero.");
-        }
+        this.qtdeDeHoras = qtdeDeHoras;
     }
 
     public int getNumeroDePessoas() {
         return numeroDePessoas;
     }
 
-    public int getQuantHoras() {
-        return qtdeHoras;
+    public void setNumeroDePessoas(int qtdeAtual) throws Exception {
+        if(numeroDePessoas < 1) {
+            throw new Exception("Inválido. Pelo menos uma pessoa deve participar da viagem.");
+        }
+
+        this.numeroDePessoas = qtdeAtual;
     }
 
-    public double getPrecoPorPessoa() {
-        return precoPorPessoa;
+    public int getQtdeDeHoras() {
+        return qtdeDeHoras;
+    }
+
+    public void setQtdeDeHoras(int qtdeAtual) throws Exception {
+        if(qtdeDeHoras < 1 || qtdeDeHoras > 10) {
+            throw new Exception("O passeio deve durar no mínimo 1h e no máximo 10h");
+        }
+        this.qtdeDeHoras = qtdeAtual;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PasseioDeLancha that = (PasseioDeLancha) o;
+        return numeroDePessoas == that.numeroDePessoas && qtdeDeHoras == that.qtdeDeHoras && Double.compare(PRECO_POR_PESSOA, that.PRECO_POR_PESSOA) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numeroDePessoas, qtdeDeHoras, PRECO_POR_PESSOA);
+    }
+
+    @Override
+    public String toString() {
+        return "PasseioDeLancha{" +
+                "numeroDePessoas=" + numeroDePessoas +
+                ", qtdeDeHoras=" + qtdeDeHoras +
+                ", PRECO_POR_PESSOA=" + PRECO_POR_PESSOA +
+                '}';
     }
 
     @Override
     public double getPreco() {
-        return numeroDePessoas * qtdeHoras * precoPorPessoa;
+        return numeroDePessoas * qtdeDeHoras * PRECO_POR_PESSOA;
     }
 
     @Override
     public String getDescricao() {
-        return "O passeio de lancha para " + numeroDePessoas + " pessoas, com duração de " + qtdeHoras + " horas.";
+        return "O passeio de lancha com " + numeroDePessoas + " e duração de " + qtdeDeHoras + "horas";
     }
 }
